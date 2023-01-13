@@ -7,7 +7,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Traits\ApiResponseTrait;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
 {
@@ -26,12 +28,25 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        $request->validate([
+        $data = $request->validate([
             'name' => 'required|string|max:50',
             'email' => 'required|email|unique:users,email',
-            'name' => 'required|string|max:50',
-            'name' => 'required|string|max:50',
+            'password' => ['required', Password::min(6)->mixedCase()],
+            'date_of_birth' => 'required|date',
+            'phone' => 'required|regex:/(01)[0-9]{9}/|max:11'
         ]);
+
+        $data['password'] = Hash::make($request->password);
+        $data['date_of_birth'] = Carbon::parse($request->date_of_birth)->format('Y-m-d');
+
+        $user = User::create($data);
+        $credentials['email'] = $user->email; 
+        $credentials['password'] = $request->password;
+
+        $token = $this->makeLogin($credentials);
+
+        return $this->respondWithToken($token);
+
     }
 
     /**
@@ -60,11 +75,17 @@ class AuthController extends Controller
 
         $credentials = request(['email', 'password']);
 
+        $token = $this->makeLogin($credentials);
+        return $this->respondWithToken($token);
+    }
+
+    private function makeLogin($credentials)
+    {
         if (!$token = auth('api')->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return $this->apiResponse(null, 'Unauthorized', 401);
         }
 
-        return $this->respondWithToken($token);
+        return $token;
     }
 
     /**
@@ -74,7 +95,7 @@ class AuthController extends Controller
      */
     public function me()
     {
-        return response()->json(auth()->user());
+        return response()->json(auth('api')->user());
     }
 
     /**
@@ -84,7 +105,7 @@ class AuthController extends Controller
      */
     public function logout()
     {
-        auth()->logout();
+        auth('api')->logout();
 
         return response()->json(['message' => 'Successfully logged out']);
     }
@@ -96,7 +117,7 @@ class AuthController extends Controller
      */
     public function refresh()
     {
-        return $this->respondWithToken(auth()->refresh());
+        return $this->respondWithToken(auth('api')->refresh());
     }
 
     /**
