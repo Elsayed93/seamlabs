@@ -19,19 +19,4 @@ trait ApiResponseTrait
     {
         return [200, 201, 202];
     }
-
-    public function notFoundResponse()
-    {
-        return $this->apiResponse(null, 'Not Found!', 404);
-    }
-
-    public function unknownError()
-    {
-        return $this->apiResponse(null, 'UnKnown Error', 400);
-    }
-
-    function deleteResponse()
-    {
-        return $this->apiResponse(true, 'deleted was succeded', 200);
-    }
 }
