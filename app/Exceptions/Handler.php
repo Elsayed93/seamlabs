@@ -6,6 +6,7 @@ use App\Traits\ApiResponseTrait;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -56,6 +57,17 @@ class Handler extends ExceptionHandler
         if ($request->expectsJson()) {
             if ($exception instanceof ModelNotFoundException) {
                 return $this->apiResponse(null, 'Not Found ... ', 404);
+            }
+            if ($exception instanceof NotFoundHttpException) {
+                return $this->apiResponse(null, $request->url() . ' Not Found ... ', 404);
+            }
+
+            if ($exception instanceof ValidationException) {
+                // dd($exception->errors()[0]);
+
+                foreach ($exception->errors() as $key => $error) {
+                    return $this->apiResponse(null, $error[0], 422);
+                }
             }
 
             return $this->apiResponse(null, $exception->getMessage(), 422);

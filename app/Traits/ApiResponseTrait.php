@@ -25,13 +25,11 @@ trait ApiResponseTrait
         return $this->apiResponse(null, 'Not Found!', 404);
     }
 
-    //unKnown Error Functio
     public function unknownError()
     {
         return $this->apiResponse(null, 'UnKnown Error', 400);
     }
 
-    //success response for Delete post
     function deleteResponse()
     {
         return $this->apiResponse(true, 'deleted was succeded', 200);
