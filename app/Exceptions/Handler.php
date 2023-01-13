@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use App\Traits\ApiResponseTrait;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -59,5 +60,11 @@ class Handler extends ExceptionHandler
 
             return $this->apiResponse(null, $exception->getMessage(), 422);
         }
+    }
+
+
+    protected function invalidJson($request, ValidationException $exception)
+    {
+        return $this->apiResponse(null, $exception->getMessage(), $exception->status);
     }
 }
