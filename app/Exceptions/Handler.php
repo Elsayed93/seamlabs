@@ -57,7 +57,7 @@ class Handler extends ExceptionHandler
     {
         if ($request->expectsJson()) {
             if ($exception instanceof ModelNotFoundException) {
-                return $this->apiResponse(null, 'Not Found ... ', 404);
+                return $this->apiResponse(null, 'This ' . class_basename($exception->getModel()) . ' Not Found ... ', 404);
             }
 
             if ($exception instanceof NotFoundHttpException) {

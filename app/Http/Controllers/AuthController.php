@@ -37,7 +37,7 @@ class AuthController extends Controller
         ]);
 
         $data['password'] = Hash::make($request->password);
-        $data['date_of_birth'] = Carbon::parse($request->date_of_birth)->format('Y-m-d');
+        $data['date_of_birth'] = formatDate($request->date_of_birth);
 
         $user = User::create($data);
         $credentials['email'] = $user->email; 
