@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Traits\ApiResponseTrait;
@@ -24,20 +25,14 @@ class UserController extends Controller
     }
 
 
-    public function update(Request $request, User $user)
+    public function update(UserRequest $request, User $user)
     {
-        $data =  $request->validate([
-            'name' => 'required|string|max:50',
-            'email' => 'required|email|unique:users,email,' . $user->id,
-            'password' => ['required', Password::min(6)->mixedCase()],
-            'date_of_birth' => 'required|date',
-            'phone' => 'required|regex:/(01)[0-9]{9}/|max:11'
-        ]);
+        $data =  $request->validated();
 
         $data['date_of_birth'] = formatDate($request->date_of_birth);
 
         $user->update($data);
-        return $this->apiResponse(new UserResource($user));
+        return $this->apiResponse(new UserResource($user), 'Updated Successfully');
     }
 
 

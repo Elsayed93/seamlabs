@@ -57,16 +57,16 @@ class Handler extends ExceptionHandler
     {
         if ($request->expectsJson()) {
             if ($exception instanceof ModelNotFoundException) {
-                return $this->apiResponse(null, 'This ' . class_basename($exception->getModel()) . ' Not Found ... ', 404);
+                return $this->apiResponse(null, "", 'This ' . class_basename($exception->getModel()) . ' Not Found ... ', 404);
             }
 
             if ($exception instanceof NotFoundHttpException) {
-                return $this->apiResponse(null, $request->url() . ' Not Found ... ', 404);
+                return $this->apiResponse(null, "", $request->url() . ' Not Found ... ', 404);
             }
 
             if ($exception instanceof ValidationException) {
                 foreach ($exception->errors() as $key => $error) {
-                    return $this->apiResponse(null, $error[0], 422);
+                    return $this->apiResponse(null, "", $error[0], 422);
                 }
             }
 
@@ -76,6 +76,6 @@ class Handler extends ExceptionHandler
 
     protected function invalidJson($request, ValidationException $exception)
     {
-        return $this->apiResponse(null, $exception->getMessage(), $exception->status);
+        return $this->apiResponse(null, "", $exception->getMessage(), $exception->status);
     }
 }
