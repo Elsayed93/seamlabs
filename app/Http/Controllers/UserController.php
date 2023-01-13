@@ -33,10 +33,17 @@ class UserController extends Controller
             'date_of_birth' => 'required|date',
             'phone' => 'required|regex:/(01)[0-9]{9}/|max:11'
         ]);
-        
+
         $data['date_of_birth'] = formatDate($request->date_of_birth);
 
         $user->update($data);
         return $this->apiResponse(new UserResource($user));
+    }
+
+
+    public function destroy(User $user)
+    {
+        $user->delete();
+        return $this->apiResponse(null, 'User Deleted Successfully');
     }
 }
