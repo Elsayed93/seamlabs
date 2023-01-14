@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Problems\CountOfNumbers;
+use App\Http\Controllers\Problems\StepNumber;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -40,3 +41,4 @@ Route::middleware('auth:api')->group(function () {
 
 // problem solving APIs
 Route::get('count-of-numbers', [CountOfNumbers::class, 'count']);
+Route::get('steps-number', [StepNumber::class, 'calcStepsToreduceNumberToZero']);

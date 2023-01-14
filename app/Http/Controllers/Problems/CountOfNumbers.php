@@ -8,19 +8,6 @@ class CountOfNumbers
 {
 
     use ApiResponseTrait;
-    // public function count()
-    // {
-    //     $n = request('start_number') - request('end_number');
-
-    //     if ($n < 5) {
-    //         return $n;
-    //     }
-
-    //     if ($n >= 5 && $n < 10) {
-    //         return $n - 1;
-    //     }
-    // }
-
 
     public function count()
     {
@@ -38,6 +25,7 @@ class CountOfNumbers
             $numbersCount++;
         }
         $data['numbers_count'] = $numbersCount;
+        
         return $this->apiResponse($data);
     }
 }
