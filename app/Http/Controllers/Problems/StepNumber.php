@@ -8,7 +8,7 @@ class StepNumber
 {
     use ApiResponseTrait;
 
-    public function calcStepsToreduceNumberToZero()
+    public function calcStepsToReduceNumberToZero()
     {
 
         request()->validate([

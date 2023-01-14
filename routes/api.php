@@ -41,4 +41,4 @@ Route::middleware('auth:api')->group(function () {
 
 // problem solving APIs
 Route::get('count-of-numbers', [CountOfNumbers::class, 'count']);
-Route::get('steps-number', [StepNumber::class, 'calcStepsToreduceNumberToZero']);
+Route::get('steps-number', [StepNumber::class, 'calcStepsToReduceNumberToZero']);
