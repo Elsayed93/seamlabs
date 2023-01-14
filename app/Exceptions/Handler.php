@@ -55,7 +55,7 @@ class Handler extends ExceptionHandler
      */
     public function render($request, $exception)
     {
-        if ($request->expectsJson()) {
+        if ($request->expectsJson() || $request->is('api/*')) {
             if ($exception instanceof ModelNotFoundException) {
                 return $this->apiResponse(null, "", 'This ' . class_basename($exception->getModel()) . ' Not Found ... ', 404);
             }
@@ -70,7 +70,7 @@ class Handler extends ExceptionHandler
                 }
             }
 
-            return $this->apiResponse(null, $exception->getMessage(), 422);
+            return $this->apiResponse(null,"", $exception->getMessage(), 422);
         }
     }
 

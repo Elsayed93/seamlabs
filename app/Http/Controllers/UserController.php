@@ -6,9 +6,6 @@ use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Traits\ApiResponseTrait;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
 {
